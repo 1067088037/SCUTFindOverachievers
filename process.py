@@ -19,7 +19,14 @@ def find_class_in_list(class_list, name):
 def calc(htmlData):
     tree = etree.HTML(htmlData)
     name_str = tree.xpath('/html/body/form/table/tr[2]/td/table/tr/td/text()')
-    student_name = re.findall(r"(学生：.*\S)", str(name_str[0]))[0].replace("学生：", "")
+    try:
+        find_name = re.findall(r"(学生：.*\S)", str(name_str[0]))
+    finally:
+        pass
+    try:
+        student_name = find_name[0].replace("学生：", "")
+    except IndexError:
+        student_name = "Unknown"
 
     class_and_grade = list(tree.xpath('/html/body/form/table/tr[4]/td/table[2]/tr/td/text()'))
     class_and_grade.extend(tree.xpath('/html/body/form/table/tr[4]/td/table[5]/tr/td/text()'))
