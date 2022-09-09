@@ -2,6 +2,7 @@ import functools
 import re
 import network
 import process
+import sys
 
 
 def get_one_student(evaluation_id):
@@ -21,7 +22,7 @@ def main():
         print("连接失败")
         return
     else:
-        print("连接成功，请稍后...\n")
+        print("连接成功，请稍后...")
 
     result = []
     for i in id_list:
@@ -30,7 +31,8 @@ def main():
         print(len(result) % 10, end="")
         if len(result) % 10 == 0:
             print(" ", end="")
-    print("\n排名\t姓名\t加权成绩")
+        sys.stdout.flush()
+    print("\n\n排名\t姓名\t加权成绩")
     result.sort(key=functools.cmp_to_key(cmp))
     for i, v in enumerate(result):
         print(f"{i + 1}\t{v.get('name')}\t{v.get('count')}")
