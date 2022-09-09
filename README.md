@@ -43,25 +43,25 @@ pip install lxml # 用于解析HTML数据
 
 按下键盘上的 F12 进入调试器，将上方的标题栏切换到“网络”
 
-![image-20220909083008901](.\assets\image-20220909083008901.png)
+![image-20220909083008901](https://github.com/1067088037/SCUTFindOverachievers/blob/master/assets/image-20220909083008901.png)
 
 在左侧目录找到“智育测评”，并点击打开。
 
-![image-20220909083125947](.\assets\image-20220909083125947.png)
+![image-20220909083125947](https://github.com/1067088037/SCUTFindOverachievers/blob/master/assets/image-20220909083125947.png)
 
 可以看到调试器的内容发生了变化，找到名称为“intellectual_main.jsp”的项，选中打开。
 
-![image-20220909083321701](.\assets\image-20220909083321701.png)
+![image-20220909083321701](https://github.com/1067088037/SCUTFindOverachievers/blob/master/assets/image-20220909083321701.png)
 
 复制请求标头中的Cookies，不包括开头的“Cookies：”，从“JSEESIONID”开始复制。
 
-![image-20220909083459785](.\assets\image-20220909083459785.png)
+![image-20220909083459785](https://github.com/1067088037/SCUTFindOverachievers/blob/master/assets/image-20220909083459785.png)
 
 ### 导入 Cookies
 
 使用记事本或其它文本编辑软件打开源代码中的 config.py，将刚才复制的内容粘贴到 cookies 的一对单引号内。
 
-![image-20220909083740362](.\assets\image-20220909083740362.png)
+![image-20220909083740362](https://github.com/1067088037/SCUTFindOverachievers/blob/master/assets/image-20220909083740362.png)
 
 ### 运行软件
 
