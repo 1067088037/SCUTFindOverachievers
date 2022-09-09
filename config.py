@@ -1,0 +1,2 @@
+cookies = ''
+classYearId = 16
