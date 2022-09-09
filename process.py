@@ -1,5 +1,12 @@
+import functools
+
 from lxml import etree
 import re
+import config
+
+
+def cmp_optional(c1, c2):
+    return float(dict(c2).get('credit')) - float(dict(c1).get('credit'))
 
 
 def find_class_in_list(class_list, name):
@@ -41,9 +48,31 @@ def calc(htmlData):
         class_name_list.append(one_class.get('name'))
         class_list.append(one_class)
 
-    counter = 0
+    counter = 0.0
+    optional_list = []
     for i in class_list:
+        if dict(i).get('name') in config.offsetClass:
+            optional_list.append(i)
+            continue
         if dict(i).get('mode') == '必修课和专业必修课（或限定选修课）':
             counter += float(dict(i).get('grade')) / 100 * float(dict(i).get('credit'))
+        elif dict(i).get('mode') == '专业选修课':
+            optional_list.append(i)
+
+    optional_list.sort(key=functools.cmp_to_key(cmp_optional))
+    optional_counter = 0.0
+    optional_num_count = 0
+    optional_credit_count = 0.0
+
+    for i in optional_list:
+        optional_counter += float(dict(i).get('grade')) / 100 * float(dict(i).get('credit'))
+        optional_num_count += 1
+        optional_credit_count += float(dict(i).get('credit'))
+        if optional_num_count >= config.optionalCountLimit \
+                or optional_credit_count >= config.optionalCreditLimit:
+            break
+    if optional_credit_count > config.optionalCreditLimit:
+        optional_counter = optional_counter / optional_credit_count * config.optionalCreditLimit
+    counter += optional_counter
 
     return student_name, round(counter * 2, 2)

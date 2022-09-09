@@ -76,3 +76,56 @@ python .\main.py
 ### 数据处理
 
 直接将显示出来的数据复制到 Excel 中任意单元格即可。
+
+## 配置文件
+
+```python
+# 学生信息管理系统 Cookies
+cookies = ''
+# 统计学年
+classYearId = 16
+# 补修课程
+offsetClass = []
+# 选修课个数限制
+optionalCountLimit = 3
+# 选修课学分限制
+optionalCreditLimit = 8
+```
+
+### cookies
+
+具体使用方法参考上述教程
+
+### classYearId
+
+2020-2021学年填 15
+
+2021-2022学年填 16
+
+### offsetClass
+
+转专业学生补修课列表
+
+参考格式如下
+
+```python
+offsetClass = ['高级语言程序设计(C++)(上)', '工科数学分析(二)', '高级语言程序设计(C++)(下)']
+```
+
+### optionalCountLimit
+
+超出数量限制的选修课不计入成绩
+
+### optionalCreditLimit
+
+超出学分限制的选修课不计入成绩；
+
+若计入第 N 门时学分达到该限制，则第 N+1 门不计入；
+
+若计入第 N 门未超标，但第 N+1 门超标，则对加权分 ÷ 学分 × 该限制。
+
+## 学院适配
+
+由于不同学院的规定略有不同，因此需要各学院的同学进行单独适配。
+
+适配者可以 Fork 本仓库后针对本学院的情况修改源码，可以 Pull Request 合并进主仓库。
