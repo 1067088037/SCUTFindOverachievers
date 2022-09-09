@@ -1,8 +1,10 @@
 import functools
+import os
 import re
 import network
 import process
 import sys
+import time
 
 
 def get_one_student(evaluation_id):
@@ -15,7 +17,7 @@ def cmp(i1, i2):
     return i2.get('count') - i1.get('count')
 
 
-def main():
+def main(saved_path):
     id_html_content = network.get_list()
     id_list = re.findall(r"(evaluationId=[0-9]+)", id_html_content)
     if len(id_list) <= 0:
@@ -32,11 +34,24 @@ def main():
         if len(result) % 10 == 0:
             print(" ", end="")
         sys.stdout.flush()
-    print("\n\n排名\t姓名\t加权成绩")
+    print("\n")
+
+    form_time = time.strftime("%Y-%m-%d %H%M%S", time.localtime())
+    file_name = str(f"{saved_path}/{form_time}.csv")
+    out_file = open(file=file_name, mode="w")
+    out_text = "排名\t姓名\t加权成绩\n"
     result.sort(key=functools.cmp_to_key(cmp))
     for i, v in enumerate(result):
-        print(f"{i + 1}\t{v.get('name')}\t{v.get('count')}")
+        out_text += f"{i + 1}\t{v.get('name')}\t{v.get('count')}\n"
+    print(out_text)
+    out_file.write(out_text.replace("\t", ","))
+
+    print(f"文件已经写入 {os.path.abspath(file_name)}\n请使用Excel打开")
+    out_file.close()
 
 
 if __name__ == '__main__':
-    main()
+    res_path = "./result"
+    if not os.path.exists(res_path):
+        os.mkdir(res_path)
+    main(saved_path=res_path)
