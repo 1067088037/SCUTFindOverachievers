@@ -9,12 +9,12 @@ import time
 
 def get_one_student(evaluation_id):
     html_content = network.get_detail(evaluation_id)
-    name, count = process.calc(html_content)
-    return {'id': evaluation_id, 'name': name, 'count': count}
+    name, exam, bonus = process.calc(html_content)
+    return {'id': evaluation_id, 'name': name, 'exam': exam, 'bonus': bonus}
 
 
 def cmp(i1, i2):
-    return i2.get('count') - i1.get('count')
+    return i2.get('exam') + i2.get('bonus') - (i1.get('exam') + i1.get('bonus'))
 
 
 def main(saved_path):
@@ -39,10 +39,12 @@ def main(saved_path):
     form_time = time.strftime("%Y-%m-%d %H%M%S", time.localtime())
     file_name = str(f"{saved_path}/{form_time}.csv")
     out_file = open(file=file_name, mode="w")
-    out_text = "排名\t姓名\t加权成绩\n"
+    out_text = "排名\t姓名\t考试折分\t加分\t智育总分\n"
     result.sort(key=functools.cmp_to_key(cmp))
     for i, v in enumerate(result):
-        out_text += f"{i + 1}\t{v.get('name')}\t{v.get('count')}\n"
+        exam = v.get('exam')
+        bonus = v.get('bonus')
+        out_text += f"{i + 1}\t{v.get('name')}\t{exam}\t{bonus}\t{exam + bonus}\n"
     print(out_text)
     out_file.write(out_text.replace("\t", ","))
 

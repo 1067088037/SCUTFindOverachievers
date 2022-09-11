@@ -19,6 +19,7 @@ def find_class_in_list(class_list, name):
 def calc(htmlData):
     tree = etree.HTML(htmlData)
     name_str = tree.xpath('/html/body/form/table/tr[2]/td/table/tr/td/text()')
+
     try:
         find_name = re.findall(r"(学生：.*\S)", str(name_str[0]))
     finally:
@@ -82,4 +83,29 @@ def calc(htmlData):
         optional_counter = optional_counter / optional_credit_count * config.optionalCreditLimit
     counter += optional_counter
 
-    return student_name, round(counter * 2, 2)
+    bonus_point_src = list(tree.xpath('/html/body/form/table/tr[6]/td/table[2]/tr/td/text()'))
+    bonus_point_items = []
+    for i in bonus_point_src:
+        item = str(i).strip()
+        if item == "":
+            continue
+        else:
+            bonus_point_items.append(item)
+
+    bonus_count = 0.0
+    bonus_point_list = []
+    for i in range(0, int(len(bonus_point_items) / 7)):
+        start = 7 * i
+        one_bonus = {
+            'index': int(bonus_point_items[start + 0].strip()),
+            'name': bonus_point_items[start + 1].strip(),
+            'type': bonus_point_items[start + 2].strip(),
+            'rank': bonus_point_items[start + 3].strip(),
+            'reference': bonus_point_items[start + 4].strip(),
+            'point': float(bonus_point_items[start + 5].strip()),
+            'status': bonus_point_items[start + 6].strip()
+        }
+        bonus_point_list.append(one_bonus)
+        bonus_count += one_bonus.get('point')
+
+    return student_name, round(counter * 2, 2), bonus_count
