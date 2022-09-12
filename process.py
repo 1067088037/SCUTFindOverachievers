@@ -37,7 +37,10 @@ def calc(htmlData):
     for i in range(0, int(len(class_and_grade) / 7)):
         start = 7 * i
         class_name = class_and_grade[start + 0].strip()
-        grade = float(re.findall(r"[0-9]+", class_and_grade[start + 1].strip())[0])
+        try:
+            grade = float(re.findall(r"[0-9]+", class_and_grade[start + 1].strip())[0])
+        except IndexError:
+            grade = 0.0
         if class_name in class_name_list:
             old_class = find_class_in_list(class_list, class_name)
             if grade > old_class.get('grade'):
