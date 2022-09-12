@@ -44,7 +44,8 @@ def main(saved_path):
     for i, v in enumerate(result):
         exam = v.get('exam')
         bonus = v.get('bonus')
-        out_text += f"{i + 1}\t{v.get('name')}\t{exam}\t{bonus}\t{exam + bonus}\n"
+        sum_point = round(exam + bonus, 2)
+        out_text += f"{i + 1}\t{v.get('name')}\t{exam}\t{bonus}\t{sum_point}\n"
     print(out_text)
     out_file.write(out_text.replace("\t", ","))
 

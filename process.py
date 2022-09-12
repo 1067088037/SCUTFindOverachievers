@@ -87,7 +87,7 @@ def calc(htmlData):
     bonus_point_items = []
     for i in bonus_point_src:
         item = str(i).strip()
-        if item == "":
+        if item == "" or item.find("通过") != -1:
             continue
         else:
             bonus_point_items.append(item)
