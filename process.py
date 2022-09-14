@@ -32,6 +32,10 @@ def calc(htmlData):
     class_and_grade = list(tree.xpath('/html/body/form/table/tr[4]/td/table[2]/tr/td/text()'))
     class_and_grade.extend(tree.xpath('/html/body/form/table/tr[4]/td/table[5]/tr/td/text()'))
 
+    for i in class_and_grade:
+        if str(i).strip() == "":
+            class_and_grade.remove(i)
+
     class_list = []
     class_name_list = []
     for i in range(0, int(len(class_and_grade) / 7)):
@@ -62,6 +66,8 @@ def calc(htmlData):
     counter = 0.0
     optional_list = []
     for i in class_list:
+        if not str(dict(i).get('status')).__contains__("通过"):
+            continue
         if dict(i).get('name') in config.offsetClass:
             optional_list.append(i)
             continue
@@ -108,6 +114,8 @@ def calc(htmlData):
             'point': float(bonus_point_items[start + 5].strip()),
             'status': bonus_point_items[start + 6].strip()
         }
+        if one_bonus.get('status').__contains__('不算分'):
+            continue
         bonus_point_list.append(one_bonus)
         bonus_count += one_bonus.get('point')
 
