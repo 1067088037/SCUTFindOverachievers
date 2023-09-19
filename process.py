@@ -46,6 +46,8 @@ def get_bonus_point(tree, xpath):
     bonus_point_list = []
     for i in range(0, int(len(bonus_point_items) / 7)):
         start = 7 * i
+        if bonus_point_items[start + 0].strip() == '算分':
+            start += 1
         one_bonus = {
             'index': int(bonus_point_items[start + 0].strip()),
             'name': bonus_point_items[start + 1].strip(),
